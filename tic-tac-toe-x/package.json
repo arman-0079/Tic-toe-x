@@ -1,0 +1,14 @@
+{
+  "name": "tic-tac-toe-x-monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "description": "TIC TAC TOE X - Premium Online Multiplayer Game (React + Vite + CSS3 + Node.js + Socket.IO + SQLite/JSON DB)",
+  "scripts": {
+    "install:all": "npm --prefix server install && npm --prefix client install",
+    "dev:server": "npm --prefix server run dev",
+    "dev:client": "npm --prefix client run dev",
+    "build": "npm --prefix client run build",
+    "start": "npm --prefix server start",
+    "test": "node server/test.js"
+  }
+}

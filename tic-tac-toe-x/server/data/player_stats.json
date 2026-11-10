@@ -1,0 +1,54 @@
+{
+  "players": {
+    "test_user_verification": {
+      "playerId": "test_user_verification",
+      "playerName": "Tester",
+      "updatedAt": "2026-11-10T03:57:59.311Z",
+      "modes": {
+        "AI_EASY": {
+          "wins": 0,
+          "losses": 0,
+          "draws": 0,
+          "currentStreak": 0,
+          "bestStreak": 0,
+          "fastestWinSec": null
+        },
+        "AI_MEDIUM": {
+          "wins": 0,
+          "losses": 0,
+          "draws": 0,
+          "currentStreak": 0,
+          "bestStreak": 0,
+          "fastestWinSec": null
+        },
+        "AI_HARD": {
+          "wins": 0,
+          "losses": 0,
+          "draws": 0,
+          "currentStreak": 0,
+          "bestStreak": 0,
+          "fastestWinSec": null
+        },
+        "LOCAL_2P": {
+          "wins": 0,
+          "losses": 0,
+          "draws": 0,
+          "p1Wins": 0,
+          "p2Wins": 0,
+          "currentStreak": 0,
+          "bestStreak": 0,
+          "fastestWinSec": null
+        },
+        "ONLINE": {
+          "wins": 0,
+          "losses": 0,
+          "draws": 0,
+          "currentStreak": 0,
+          "bestStreak": 0,
+          "fastestWinSec": null
+        }
+      },
+      "recentMatches": []
+    }
+  }
+}

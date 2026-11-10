@@ -1,0 +1,108 @@
+/* TIC TAC TOE X - Dark Luxury Gaming UI Theme (CSS3) */
+:root {
+  --bg-obsidian: #050508;
+  --bg-surface: rgba(16, 16, 28, 0.72);
+  --bg-surface-elevated: rgba(24, 24, 42, 0.85);
+  --border-glass: rgba(168, 85, 247, 0.24);
+  --border-cyan: rgba(6, 182, 212, 0.32);
+  --neon-purple: #a855f7;
+  --neon-purple-bright: #c084fc;
+  --neon-cyan: #06b6d4;
+  --neon-cyan-bright: #22d3ee;
+  --accent-emerald: #10b981;
+  --accent-amber: #f59e0b;
+  --accent-rose: #f43f5e;
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+}
+
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--bg-obsidian);
+  color: var(--text-primary);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  overflow-x: hidden;
+  user-select: none;
+}
+
+.tttx-root {
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at 15% 15%, rgba(168, 85, 247, 0.16) 0%, transparent 45%),
+    radial-gradient(circle at 85% 82%, rgba(6, 182, 212, 0.15) 0%, transparent 45%),
+    linear-gradient(180deg, #050508 0%, #090912 50%, #050508 100%);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.tttx-glass-panel {
+  background: var(--bg-surface);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  box-shadow:
+    0 20px 50px rgba(0, 0, 0, 0.65),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.tttx-glow-x {
+  filter: drop-shadow(0 0 10px rgba(168, 85, 247, 0.85))
+    drop-shadow(0 0 22px rgba(168, 85, 247, 0.45));
+}
+
+.tttx-glow-o {
+  filter: drop-shadow(0 0 10px rgba(6, 182, 212, 0.85))
+    drop-shadow(0 0 22px rgba(6, 182, 212, 0.45));
+}
+
+@keyframes tttx-draw-stroke {
+  from {
+    stroke-dashoffset: 160;
+    opacity: 0.3;
+  }
+  to {
+    stroke-dashoffset: 0;
+    opacity: 1;
+  }
+}
+
+@keyframes tttx-win-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+    box-shadow:
+      0 0 24px rgba(168, 85, 247, 0.5),
+      inset 0 0 18px rgba(6, 182, 212, 0.35);
+  }
+  50% {
+    transform: scale(1.035);
+    box-shadow:
+      0 0 36px rgba(6, 182, 212, 0.75),
+      inset 0 0 24px rgba(168, 85, 247, 0.55);
+  }
+}
+
+.tttx-animate-stroke {
+  stroke-dasharray: 160;
+  animation: tttx-draw-stroke 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.tttx-winning-cell {
+  animation: tttx-win-pulse 1.3s ease-in-out infinite;
+  border-color: rgba(34, 211, 238, 0.75) !important;
+  background: linear-gradient(
+    135deg,
+    rgba(168, 85, 247, 0.24),
+    rgba(6, 182, 212, 0.24)
+  ) !important;
+}

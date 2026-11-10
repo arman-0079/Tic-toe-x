@@ -1,0 +1,17 @@
+{
+  "name": "tic-tac-toe-x-server",
+  "version": "1.0.0",
+  "description": "Authoritative Node.js + Socket.IO real-time multiplayer backend for TIC TAC TOE X",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "node --watch index.js",
+    "test": "node test.js"
+  },
+  "dependencies": {
+    "better-sqlite3": "^11.3.0",
+    "cors": "^2.8.5",
+    "express": "^4.21.0",
+    "socket.io": "^4.7.5"
+  }
+}
