@@ -1,13 +1,22 @@
 /**
  * TIC TAC TOE X - Persistent Player Statistics Database Layer
- * Supports SQLite3 (via better-sqlite3 when native bindings are available)
- * with automatic zero-config atomic JSON file persistence fallback.
+ * Uses Node's built-in `node:sqlite` (DatabaseSync, available in Node 22.5+ / Node 26)
+ * with automatic fallback to zero-dependency atomic JSON file persistence (`JSON_ATOMIC`).
+ * Zero native C++ / node-gyp compilation required on Vercel.
  */
 
 const fs = require('fs');
+const os = require('os');
 const path = require('path');
 
-const DATA_DIR = path.join(__dirname, 'data');
+function resolveWritableDataDir() {
+  if (process.env.VERCEL || process.env.AWS_LAMBDA_FUNCTION_NAME) {
+    return path.join(os.tmpdir(), 'tic-tac-toe-x-data');
+  }
+  return path.join(__dirname, 'data');
+}
+
+const DATA_DIR = resolveWritableDataDir();
 const JSON_DB_PATH = path.join(DATA_DIR, 'player_stats.json');
 const SQLITE_DB_PATH = path.join(DATA_DIR, 'player_stats.sqlite');
 
@@ -36,10 +45,9 @@ class StatsDatabase {
     this.engineType = 'JSON_ATOMIC';
 
     try {
-      // Attempt native SQLite initialization if installed
-      const BetterSqlite3 = require('better-sqlite3');
-      this.sqlite = new BetterSqlite3(SQLITE_DB_PATH);
-      this.sqlite.pragma('journal_mode = WAL');
+      // Use built-in node:sqlite (Node 22.5+ / Node 26 on Vercel) — zero node-gyp compilation
+      const { DatabaseSync } = require('node:sqlite');
+      this.sqlite = new DatabaseSync(SQLITE_DB_PATH);
       this.sqlite.exec(`
         CREATE TABLE IF NOT EXISTS player_profiles (
           player_id TEXT PRIMARY KEY,
@@ -59,9 +67,9 @@ class StatsDatabase {
           played_at TEXT NOT NULL
         );
       `);
-      this.engineType = 'SQLITE3';
+      this.engineType = 'NODE_BUILTIN_SQLITE';
     } catch (_err) {
-      // Fallback to zero-dependency atomic JSON store
+      this.sqlite = null;
       if (!fs.existsSync(JSON_DB_PATH)) {
         fs.writeFileSync(JSON_DB_PATH, JSON.stringify({ players: {} }, null, 2), 'utf8');
       }
@@ -89,7 +97,7 @@ class StatsDatabase {
       const row = this.sqlite
         .prepare('SELECT stats_json FROM player_profiles WHERE player_id = ?')
         .get(safeId);
-      if (row) {
+      if (row && row.stats_json) {
         return JSON.parse(row.stats_json);
       }
       const initial = createDefaultStats(safeId, playerName);
@@ -113,7 +121,7 @@ class StatsDatabase {
     const {
       playerName = 'Player 1',
       mode = 'AI_HARD',
-      outcome = 'DRAW', // 'WIN' | 'LOSS' | 'DRAW'
+      outcome = 'DRAW',
       playerSymbol = 'X',
       opponentName = 'AI',
       durationSec = 0,
